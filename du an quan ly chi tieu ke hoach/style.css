@@ -1,0 +1,359 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --nen: #0a0a0a;
+  --nen-the: #141414;
+  --nen-vien: #232323;
+  --chu-chinh: #e8e6e1;
+  --chu-phu: #8a8780;
+  --xanh-thu: #00d9a3;
+  --do-chi: #ff5470;
+  --xanh-nen: rgba(0, 217, 163, 0.08);
+  --do-nen: rgba(255, 84, 112, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--nen);
+  color: var(--chu-chinh);
+  font-family: 'Inter', -apple-system, sans-serif;
+  min-height: 100vh;
+  background-image:
+    linear-gradient(var(--nen-vien) 1px, transparent 1px);
+  background-size: 100% 44px;
+  background-attachment: fixed;
+}
+
+#login, #main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ===== Tiêu đề ===== */
+h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--nen-vien);
+}
+
+h1::before {
+  content: "$ ";
+  color: var(--xanh-thu);
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--chu-phu);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 20px 20px 0;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+h2:hover {
+  color: var(--xanh-thu);
+  border-color: var(--xanh-thu);
+}
+
+/* ===== Form đăng nhập / đăng ký ===== */
+#login {
+  max-width: 380px;
+  padding-top: 12vh;
+}
+
+#login h1::before {
+  content: "";
+}
+
+#login > div {
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  border-radius: 10px;
+  padding: 32px;
+}
+
+#login h1 {
+  font-size: 22px;
+  text-align: center;
+  border: none;
+  padding: 0 0 24px;
+}
+
+.dangNhap, .dangKy {
+  width: 100%;
+  background: var(--nen);
+  border: 1px solid var(--nen-vien);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: var(--chu-chinh);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.dangNhap:focus, .dangKy:focus {
+  border-color: var(--xanh-thu);
+}
+
+.dangNhap::placeholder, .dangKy::placeholder {
+  color: var(--chu-phu);
+}
+
+.nutDN, .nutDK {
+  width: 100%;
+  background: var(--xanh-thu);
+  color: #04140f;
+  border: none;
+  border-radius: 6px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+}
+
+.nutDN:hover, .nutDK:hover {
+  opacity: 0.85;
+}
+
+#login p {
+  text-align: center;
+  color: var(--chu-phu);
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+#login p span {
+  color: var(--xanh-thu);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ===== Thanh chuyển tháng ===== */
+#main > div:nth-of-type(1) {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+#main > div:nth-of-type(1) button {
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  color: var(--chu-chinh);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#main > div:nth-of-type(1) button:hover {
+  border-color: var(--xanh-thu);
+  color: var(--xanh-thu);
+}
+
+#main > div:nth-of-type(1) span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--chu-chinh) !important;
+}
+
+/* ===== Nút đăng xuất ===== */
+button[onclick="dangXuat()"], button[onClick="dangXuat()"] {
+  float: right;
+  background: transparent;
+  border: 1px solid var(--nen-vien);
+  color: var(--chu-phu);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button[onclick="dangXuat()"]:hover, button[onClick="dangXuat()"]:hover {
+  border-color: var(--do-chi);
+  color: var(--do-chi);
+}
+
+/* ===== Select bộ lọc ===== */
+select {
+  background: var(--nen);
+  color: var(--chu-chinh);
+  border: 1px solid var(--nen-vien);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Bảng giao dịch — kiểu sổ ghi chép ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  clear: both;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+table tr:first-child {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--chu-phu);
+}
+
+th {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--nen-vien);
+  font-weight: 600;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--nen-vien);
+  color: var(--chu-chinh);
+}
+
+/* vạch màu bên trái theo loại thu/chi, gắn qua data-loai nếu bạn thêm vào <tr> */
+tr[data-loai="thu"] {
+  border-left: 3px solid var(--xanh-thu);
+  background: var(--xanh-nen);
+}
+
+tr[data-loai="chi"] {
+  border-left: 3px solid var(--do-chi);
+  background: var(--do-nen);
+}
+
+/* Tô màu số tiền theo loại (đặt class "so-tien-thu" / "so-tien-chi" vào <td> số tiền) */
+.so-tien-thu {
+  color: var(--xanh-thu);
+  font-weight: 700;
+}
+
+.so-tien-chi {
+  color: var(--do-chi);
+  font-weight: 700;
+}
+
+/* ===== Nút hành động trong bảng ===== */
+td button {
+  background: transparent;
+  border: 1px solid var(--nen-vien);
+  color: var(--chu-phu);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+td button:hover {
+  border-color: var(--chu-chinh);
+  color: var(--chu-chinh);
+}
+
+/* ===== Form thêm / sửa giao dịch ===== */
+#main input[type="text"],
+#main input[type="number"],
+#main input[type="date"],
+#main input[type="password"] {
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--chu-chinh);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin: 4px 8px 4px 0;
+  outline: none;
+}
+
+#main input:focus {
+  border-color: var(--xanh-thu);
+}
+
+.luu-btn {
+  background: var(--xanh-thu);
+  color: #04140f;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.huy-btn {
+  background: transparent;
+  color: var(--chu-phu);
+  border: 1px solid var(--nen-vien);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.huy-btn:hover {
+  border-color: var(--do-chi);
+  color: var(--do-chi);
+}
+
+.nutLuuThem {
+  background: var(--xanh-thu);
+  color: #04140f;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.nutHuy {
+  background: transparent;
+  color: var(--chu-phu);
+  border: 1px solid var(--nen-vien);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--chu-phu);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 12px 0 4px;
+}
+
+/* ===== Thanh % chi tiêu (thay cho biểu đồ) ===== */
+#main p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--chu-phu);
+}
+
+#main div[style*="background:#e2e8f0"] {
+  background: var(--nen-vien) !important;
+}

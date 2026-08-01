@@ -25,10 +25,9 @@ function dangNhap() {
     alert("Đăng nhập thành công");
     document.getElementById("login").style.display = "none";
     document.getElementById("main").style.display = "block";
-
-    veTrangchu();
-    return;
-
+    localStorage.setItem("nguoiDangNhap", tenNguoiDung);
+    napGiaoDichCuaNguoiDung();
+    veTrangchu(locTheoThang());
   } else {
     alert("Sai tên đăng nhập hoặc mật khẩu");
   }
@@ -80,8 +79,25 @@ function dangKy() {
 }
 
 function dangXuat() {
+  localStorage.removeItem("nguoiDangNhap");
   document.getElementById("main").style.display = "none";
   document.getElementById("login").style.display = "block";
   moTrangDangNhap();
 }
-moTrangDangNhap();
+function nguoiDungHienTai() {
+  return localStorage.getItem("nguoiDangNhap");
+}
+function kiemTraDangNhap() {
+  if (nguoiDungHienTai()) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("main").style.display = "block";
+napGiaoDichCuaNguoiDung();
+veTrangchu();
+  } else {
+    moTrangDangNhap();
+  }
+}
+
+function napGiaoDichCuaNguoiDung() {
+  giaoDich = layDuLieuGiaoDich();
+}

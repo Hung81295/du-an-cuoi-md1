@@ -10,7 +10,7 @@ class GiaoDich {
 }
 
 function layDuLieuGiaoDich() {
-  let duLieu = localStorage.getItem("GiaoDichClass");
+  let duLieu = localStorage.getItem("GiaoDich_" + nguoiDungHienTai());
 
   if (!duLieu || duLieu === "undefined") {
     return [];
@@ -29,17 +29,33 @@ function layDuLieuGiaoDich() {
     )
   );
 }
+
 function luuDuLieuGiaoDich() {
-  localStorage.setItem("GiaoDichClass", JSON.stringify(giaoDich));
+  localStorage.setItem("GiaoDich_" + nguoiDungHienTai(), JSON.stringify(giaoDich));
 }
 
-let giaoDich = layDuLieuGiaoDich();
-console.log(giaoDich);
+let giaoDich = [];
 
-function veTrangchu() {
-  console.log("Đã vào trang chủ");
+let thangDangXem= new Date().toISOString().slice(0,7);
+function locTheoThang(){
+  return giaoDich.filter(gd=>gd.ngay.slice(0,7)===thangDangXem);
+}
+function doiThang(soThang){
+  let [nam,thang]=thangDangXem.split("-").map(Number);
+  let ngayMoi=new Date(nam,thang-1+soThang,1);
+  let namMoi=ngayMoi.getFullYear();
+  let thangMoi=String(ngayMoi.getMonth()+1).padStart(2,"0");
+  thangDangXem=namMoi+ "-" +thangMoi;
+  veTrangchu(locTheoThang());
+}
+
+function veTrangchu(mangHienThi) {
+  if (!mangHienThi) mangHienThi = locTheoThang();
   let chuoiHtml = `
     <h1>Trang chủ</h1>
+<div><button onclick="doiThang(-1)">&lt;</button>
+<span style="font-weight:bold; margin:0 10px;">${thangDangXem}</span>
+<button onclick="doiThang(1)">&gt;</button></div>
     <h2 onclick="thuChi()">Chi tiêu</h2>
     <h2>Tiết kiệm</h2>
   <button onClick="dangXuat()">Đăng xuất</button>
@@ -48,7 +64,13 @@ function veTrangchu() {
         <tr>
             <th>ID</th>
             <th>Ngày</th>
-            <th>Loại</th>
+            <th>Loại <br>
+            <select name="locLoai" id="locLoai" onchange="loc()" style="font-weight:  normal; margin-top: 5px; cursor: pointer;">
+            <option value="tatCa">Tất cả</option>
+            <option value="chi">Chi</option>
+            <option value="thu">Thu</option>
+            </select>
+             </th>
             <th>Danh mục</th>
             <th>Số tiền</th>
             <th>Ghi chú</th>
@@ -57,26 +79,43 @@ function veTrangchu() {
         </tr>
     `;
 
-  for (let i = 0; i < giaoDich.length; i++) {
-    let item = giaoDich[i];
+  for (let i = 0; i < mangHienThi.length; i++) {
 
-    chuoiHtml += `
-        <tr>
-            <td>${item.id}</td>
-            <td>${item.ngay}</td>
-            <td>${item.loai}</td>
-            <td>${item.danhMuc}</td>
-            <td>${item.soTien}</td>
-            <td>${item.ghiChu}</td>
-            <td><button onclick="xoaGiaoDich(${item.id})">Xóa</button></td>
-            <td><button onclick="toiTrangSua(${item.id})">Sửa</button></td>
-        </tr>
-        `;
+    let item =mangHienThi[i];
+
+        chuoiHtml += `
+      <tr data-loai="${item.loai}">
+      <td>${item.id}</td>
+    <td>${item.ngay}</td>
+    <td>${item.loai}</td>
+    <td>${item.danhMuc}</td>
+    <td class="${item.loai === "thu" ? "so-tien-thu" : "so-tien-chi"}">${item.soTien.toLocaleString("vi-VN")}đ</td>
+    <td>${item.ghiChu}</td>
+    <td><button onclick="xoaGiaoDich(${item.id})">Xóa</button></td>
+    <td><button onclick="toiTrangSua(${item.id})">Sửa</button></td>
+  </tr>
+    `;
   }
-
-  chuoiHtml += "</table>";
-
+  let tongThu=0;
+  let tongChi=0;
+  for (let gd of mangHienThi){
+    if (gd.loai==="thu"){
+      tongThu+=gd.soTien;
+    }else {
+      tongChi+=gd.soTien;
+    }
+  }
+  let phanTramChi=tongThu>0?Math.min((tongChi/tongThu)*100,100):0;
+  chuoiHtml+=`
+  </table>
+  <p>Chi tiêu tháng này: ${phanTramChi.toFixed(0)}% so với thu nhập
+  (Thu: ${tongThu.toLocaleString("vi-VN")}đ - Chi: ${tongChi.toLocaleString("vi-VN")}đ</p>
+  <div style="width:100%; height:20px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
+    <div style="width:${phanTramChi}%; height:100%; background:${tongChi > tongThu ? "red" : "green"};"></div>
+  </div>
+`
   document.getElementById("main").innerHTML = chuoiHtml;
+
 }
 
 function thuChi() {
@@ -85,7 +124,7 @@ function thuChi() {
     <input type="date" placeholder="Nhập ngày" id="themNgay">
     <select name="loai" id="loai">
   <option value="chon">---Chọn loại---</option>
-  <option value="chi">Chi</option>
+ <option value="chi">Chi</option>
   <option value="thu">Thu</option>
 </select>
     <input type="text" placeholder="Nhập danh mục chi thu" id="danhMuc">
@@ -97,8 +136,8 @@ function thuChi() {
 `;
 }
 
-function themVaoTrangChu()   {
-  let id = giaoDich.length + 1;
+function themVaoTrangChu() {
+  let id = Date.now();
   let ngay = document.getElementById("themNgay").value;
   let danhMuc = document.getElementById("danhMuc").value;
   let loai = document.getElementById("loai").value;
@@ -108,9 +147,12 @@ function themVaoTrangChu()   {
     alert("Vui lòng nhập đúng số tiền");
     return;
   }
+  if (danhMuc.trim() === "") { alert("Vui lòng nhập danh mục"); return; }
+  if (ngay === "") { alert("Vui lòng chọn ngày"); return; }
+  if (loai === "chon") { alert("Vui lòng chọn loại"); return; }
   giaoDich.push(new GiaoDich(id, loai, danhMuc, soTien, ngay, ghiChu))
   luuDuLieuGiaoDich()
-  veTrangchu();
+  veTrangchu(locTheoThang());
   thongBao("✅ Đã thêm giao dịch!", "green")
 
 }
@@ -141,8 +183,8 @@ function toiTrangSua(id) {
 <p>Loại</p>
 <select name="suaLoai" id="suaLoai" >
 <option value="chonSua">---Chọn loại---</option>
-<option value="${giaoDichCanSua.loai}">Chi</option>
-<option value="${giaoDichCanSua.loai}">Thu</option>
+  <option value="chi" ${giaoDichCanSua.loai === "chi" ? "selected" : ""}>Chi</option>
+  <option value="thu" ${giaoDichCanSua.loai === "thu" ? "selected" : ""}>Thu</option>
 </select>
 <label>Danh mục</label>
 <input type="text" placeholder="Nhập danh mục thu chi" id="suaDanhMuc" value="${giaoDichCanSua.danhMuc}">
@@ -173,13 +215,13 @@ function luuGiaoDich(id) {
     alert("Nhập lại số tiền");
     return;
   }
-  if (loaiMoi === "---Chọn loại---") {
+  if (loaiMoi === "chonSua") {
     alert("Chọn loại giao dịch");
     return;
   }
   giaoDich[viTriSua] = new GiaoDich(id, loaiMoi, danhMucMoi, soTienMoi, ngayMoi, ghiChuMoi);
   luuDuLieuGiaoDich();
-  veTrangchu();
+  veTrangchu(locTheoThang());
   thongBao("Đã sửa thành công", "blue")
 }
 
@@ -191,8 +233,25 @@ function xoaGiaoDich(id) {
   if (hoi) {
     giaoDich.splice(viTriXoa, 1);
     luuDuLieuGiaoDich();
-    veTrangchu();
-    thongBao("🗑️ Đã xóa!", "red")
+    veTrangchu(locTheoThang());    thongBao("🗑️ Đã xóa!", "red")
   }
 
 }
+function loc(){
+  let locLoai=document.getElementById("locLoai").value;
+  let dsThang = locTheoThang();
+  let ketQua=dsThang.filter(function (gd){
+let khopLoai=false;
+if (locLoai==="tatCa"){
+  khopLoai=true;
+}else if (locLoai==="chi"){
+  khopLoai=gd.loai==="chi";
+}else {
+  khopLoai=gd.loai==="thu";
+}
+return khopLoai;
+  });
+  veTrangchu(ketQua);
+}
+
+kiemTraDangNhap();
