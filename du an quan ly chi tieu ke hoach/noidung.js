@@ -37,6 +37,7 @@ function luuDuLieuGiaoDich() {
 let giaoDich = [];
 
 let thangDangXem= new Date().toISOString().slice(0,7);
+let locLoaiHienTai = "tatCa";
 function locTheoThang(){
   return giaoDich.filter(gd=>gd.ngay.slice(0,7)===thangDangXem);
 }
@@ -53,25 +54,26 @@ function veTrangchu(mangHienThi) {
   document.getElementById("tietKiem").style.display = "none";
   document.getElementById("main").style.display = "block";
   if (!mangHienThi) mangHienThi = locTheoThang();
+  let dsCaThang = locTheoThang();
   let chuoiHtml = `
     <h1>Trang chủ</h1>
 <div><button onclick="doiThang(-1)">&lt;</button>
 <span style="font-weight:bold; margin:0 10px;">${thangDangXem}</span>
 <button onclick="doiThang(1)">&gt;</button></div>
-    <h2 onclick="thuChi()">Chi tiêu</h2>
-    <h2 onclick="trangKeHoach()">Tiết kiệm</h2>
+    <h2 onclick="thuChi()" class="tieu-de-trang">Chi tiêu</h2>
+   &nbsp; <h2 onclick="trangKeHoach()" class="tieu-de-trang">Tiết kiệm</h2>
   <button onClick="dangXuat()">Đăng xuất</button>
 
     <table border="1">
         <tr>
             <th>ID</th>
             <th>Ngày</th>
-            <th>Loại <br>
-            <select name="locLoai" id="locLoai" onchange="loc()" style="font-weight:  normal; margin-top: 5px; cursor: pointer;">
-            <option value="tatCa">Tất cả</option>
-            <option value="chi">Chi</option>
-            <option value="thu">Thu</option>
-            </select>
+            <th>
+<select name="locLoai" id="locLoai" onchange="loc()" class="select-loc">
+  <option value="tatCa" ${locLoaiHienTai === "tatCa" ? "selected" : ""}>Loại</option>
+  <option value="chi" ${locLoaiHienTai === "chi" ? "selected" : ""}>Chi</option>
+  <option value="thu" ${locLoaiHienTai === "thu" ? "selected" : ""}>Thu</option>
+</select>
              </th>
             <th>Danh mục</th>
             <th>Số tiền</th>
@@ -100,13 +102,25 @@ function veTrangchu(mangHienThi) {
   }
   let tongThu=0;
   let tongChi=0;
-  for (let gd of mangHienThi){
+  for (let gd of dsCaThang){
     if (gd.loai==="thu"){
       tongThu+=gd.soTien;
     }else {
       tongChi+=gd.soTien;
     }
   }
+  let soDu=tongThu-tongChi;
+  chuoiHtml += `
+  <div class="the-tiet-kiem-thang">
+    <div class="ben-trai">
+<img class="icon-heo" src="https://img.icons8.com/ios/50/c9a227/money-box.png" alt="Heo đất"> <div>
+        <div class="nhan">Số tiền còn lại tháng này</div>
+        <div class="so-du ${soDu >= 0 ? "duong" : "am"}">${soDu.toLocaleString("vi-VN")}đ</div>
+      </div>
+    </div>
+    <button class="luu-btn" onclick="chuyenVaoTietKiem(${soDu})">🪙 Bỏ ống</button>
+  </div>
+`;
   let phanTramChi=tongThu>0?Math.min((tongChi/tongThu)*100,100):0;
   chuoiHtml+=`
   </table>
@@ -115,9 +129,8 @@ function veTrangchu(mangHienThi) {
   <div style="width:100%; height:20px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
     <div style="width:${phanTramChi}%; height:100%; background:${tongChi > tongThu ? "red" : "green"};"></div>
   </div>
-  <button class="sap-xep-btn" onclick="sapXepMoiNhat()">Mới nhất</button>
-<button class="sap-xep-btn" onclick="sapXepSoTien()">Số tiền cao nhất</button>
-`
+  <button class="sap-xep-btn" onclick="sapXepMoiNhat()">Giao dịch mới được thêm vào</button>
+<button class="sap-xep-btn" onclick="sapXepSoTien()">Giao dịch có số tiền cao nhất</button>`
   document.getElementById("main").innerHTML = chuoiHtml;
 
 }
@@ -246,19 +259,19 @@ function xoaGiaoDich(id) {
   }
 
 }
-function loc(){
-  let locLoai=document.getElementById("locLoai").value;
+function loc() {
+  locLoaiHienTai = document.getElementById("locLoai").value;   // ✅ lưu lại
   let dsThang = locTheoThang();
-  let ketQua=dsThang.filter(function (gd){
-let khopLoai=false;
-if (locLoai==="tatCa"){
-  khopLoai=true;
-}else if (locLoai==="chi"){
-  khopLoai=gd.loai==="chi";
-}else {
-  khopLoai=gd.loai==="thu";
-}
-return khopLoai;
+  let ketQua = dsThang.filter(function (gd) {
+    let khopLoai = false;
+    if (locLoaiHienTai === "tatCa") {
+      khopLoai = true;
+    } else if (locLoaiHienTai === "chi") {
+      khopLoai = gd.loai === "chi";
+    } else {
+      khopLoai = gd.loai === "thu";
+    }
+    return khopLoai;
   });
   veTrangchu(ketQua);
 }
@@ -266,4 +279,9 @@ function sapXepMoiNhat() {
   giaoDich.sort((a, b) =>new Date(b.ngay) - new Date(a.ngay));
   veTrangchu();
     locTheoThang();
+
+}
+function sapXepSoTien() {
+  giaoDich.sort((a, b) => b.soTien - a.soTien);
+  veTrangchu(locTheoThang());
 }

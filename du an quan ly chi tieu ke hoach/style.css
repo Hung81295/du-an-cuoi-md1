@@ -81,15 +81,15 @@ h1[onclick]:hover {
 /* Tab điều hướng nhỏ — "Chi tiêu" / "Tiết kiệm" trên trang chủ */
 h2 {
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 20px;              /* tăng từ 14px lên 20px */
+  font-weight: 700;             /* đậm hơn */
   color: var(--chu-phu);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  text-transform: none;         /* bỏ chữ hoa cho đỡ "gắt" ở cỡ lớn */
+  letter-spacing: 0.3px;
   cursor: pointer;
   display: inline-block;
-  margin: 0 24px 20px 0;
-  padding-bottom: 5px;
+  margin: 0 28px 20px 0;
+  padding-bottom: 6px;
   border-bottom: 2px solid transparent;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -125,10 +125,10 @@ strong {
   color: var(--vang-sang);
   text-transform: none;
   letter-spacing: 0.5px;
-  cursor: default;
   border-bottom: none;
   margin: 0 0 20px;
-  display: block;
+  display: inline-block;
+  cursor: pointer;
 }
 
 .tieu-de-trang.nho-hon {
@@ -320,7 +320,17 @@ select {
   outline: none;
   height: 42px;
 }
-
+#login, #main, #tietKiem {
+  max-width: 1000px;   /* tăng từ 780px lên 1000px */
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+table td:nth-child(1),
+table td:nth-child(2),
+table td:nth-child(3),
+table td:nth-child(5) {
+  white-space: nowrap;
+}
 #main select, #tietKiem select {
   background: var(--nen-the);
   border: 1px solid var(--nen-vien);
@@ -559,4 +569,93 @@ td button:hover, div button:hover {
 .dem-nguoc.qua-han {
   color: var(--do-tien-sang);
   background: rgba(239, 69, 101, 0.1);
+}
+.the-tiet-kiem-thang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  border-left: 3px solid var(--vang);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 20px 0;
+}
+
+.the-tiet-kiem-thang .icon-heo {
+  color: var(--vang);
+  filter: drop-shadow(0 0 6px rgba(201,162,39,0.3));
+  flex-shrink: 0;
+}
+.the-tiet-kiem-thang .ben-trai {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.the-tiet-kiem-thang .nhan {
+  font-size: 11px;
+  color: var(--chu-phu);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.the-tiet-kiem-thang .so-du {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.the-tiet-kiem-thang .so-du.duong {
+  color: var(--xanh-tien-sang);
+}
+
+.the-tiet-kiem-thang .so-du.am {
+  color: var(--do-tien-sang);
+}
+.select-loc {
+  margin-top: 0;
+  width: auto;
+  min-width: 90px;
+  padding: 6px 8px;
+  background: var(--nen);
+  border: 1px solid var(--nen-vien);
+  border-radius: 6px;
+  color: var(--vang);              /* đổi từ var(--chu-chinh) sang var(--vang) */
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;                /* thêm đậm nhẹ cho giống trọng lượng chữ tiêu đề khác */
+  text-transform: uppercase;       /* thêm hoa cho khớp "ID", "NGÀY", "DANH MỤC" viết hoa */
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.select-loc:hover, .select-loc:focus {
+  border-color: var(--vang);
+  outline: none;
+}
+#main .select-loc, #tietKiem .select-loc {
+  margin-top: 0;
+  width: auto;
+  min-width: 90px;
+  padding: 6px 8px;
+  background: var(--nen);
+  border: 1px solid var(--nen-vien);
+  border-radius: 6px;
+  color: var(--vang);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+#main .select-loc:hover, #main .select-loc:focus,
+#tietKiem .select-loc:hover, #tietKiem .select-loc:focus {
+  border-color: var(--vang);
+  outline: none;
 }
