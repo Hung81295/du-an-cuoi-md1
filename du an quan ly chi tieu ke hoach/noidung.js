@@ -50,6 +50,8 @@ function doiThang(soThang){
 }
 
 function veTrangchu(mangHienThi) {
+  document.getElementById("tietKiem").style.display = "none";
+  document.getElementById("main").style.display = "block";
   if (!mangHienThi) mangHienThi = locTheoThang();
   let chuoiHtml = `
     <h1>Trang chủ</h1>
@@ -57,7 +59,7 @@ function veTrangchu(mangHienThi) {
 <span style="font-weight:bold; margin:0 10px;">${thangDangXem}</span>
 <button onclick="doiThang(1)">&gt;</button></div>
     <h2 onclick="thuChi()">Chi tiêu</h2>
-    <h2>Tiết kiệm</h2>
+    <h2 onclick="trangKeHoach()">Tiết kiệm</h2>
   <button onClick="dangXuat()">Đăng xuất</button>
 
     <table border="1">
@@ -91,8 +93,8 @@ function veTrangchu(mangHienThi) {
     <td>${item.danhMuc}</td>
     <td class="${item.loai === "thu" ? "so-tien-thu" : "so-tien-chi"}">${item.soTien.toLocaleString("vi-VN")}đ</td>
     <td>${item.ghiChu}</td>
-    <td><button onclick="xoaGiaoDich(${item.id})">Xóa</button></td>
-    <td><button onclick="toiTrangSua(${item.id})">Sửa</button></td>
+    <td><button class="huy-btn" onclick="xoaGiaoDich(${item.id})">Xóa</button></td>
+    <td><button class="sua-btn" onclick="toiTrangSua(${item.id})">Sửa</button></td>
   </tr>
     `;
   }
@@ -109,10 +111,12 @@ function veTrangchu(mangHienThi) {
   chuoiHtml+=`
   </table>
   <p>Chi tiêu tháng này: ${phanTramChi.toFixed(0)}% so với thu nhập
-  (Thu: ${tongThu.toLocaleString("vi-VN")}đ - Chi: ${tongChi.toLocaleString("vi-VN")}đ</p>
+  (Thu: ${tongThu.toLocaleString("vi-VN")}đ - Chi: ${tongChi.toLocaleString("vi-VN")}đ)</p>
   <div style="width:100%; height:20px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
     <div style="width:${phanTramChi}%; height:100%; background:${tongChi > tongThu ? "red" : "green"};"></div>
   </div>
+  <button class="sap-xep-btn" onclick="sapXepMoiNhat()">Mới nhất</button>
+<button class="sap-xep-btn" onclick="sapXepSoTien()">Số tiền cao nhất</button>
 `
   document.getElementById("main").innerHTML = chuoiHtml;
 
@@ -120,17 +124,22 @@ function veTrangchu(mangHienThi) {
 
 function thuChi() {
   document.getElementById("main").innerHTML = `
-    <h3>Chi tiết thu chi</h3>
+<h3 class="tieu-de-trang">Chi tiết thu chi</h3><br>    <br>
+    <p>Nhập ngày đã chi tiêu</p>
     <input type="date" placeholder="Nhập ngày" id="themNgay">
+<p>Nhập loại thu chi</p>
     <select name="loai" id="loai">
   <option value="chon">---Chọn loại---</option>
  <option value="chi">Chi</option>
   <option value="thu">Thu</option>
 </select>
+<p>Nhập lý do chi thu</p>
     <input type="text" placeholder="Nhập danh mục chi thu" id="danhMuc">
+<p>Nhập số tiền chi thu</p>
     <input type="number" placeholder="Nhập số tiền" id="soTien">
+<p>Nhập ghi chú cần thiết</p>
     <input type="text" placeholder="Ghi chú thông tin nếu cần" id="ghiChu">
-    <br>
+    <br><br>
     <button class="luu-btn" onclick="themVaoTrangChu()">Thêm</button>
     <button class="huy-btn" onclick="veTrangchu()">Hủy</button>
 `;
@@ -179,8 +188,7 @@ function toiTrangSua(id) {
   }
   let giaoDichCanSua = giaoDich[viTriSua];
   document.getElementById("main").innerHTML = `
-<h2>Sửa giao dịch</h2>
-<p>Loại</p>
+<h2 class="tieu-de-trang">Sửa giao dịch</h2><p>Loại</p>
 <select name="suaLoai" id="suaLoai" >
 <option value="chonSua">---Chọn loại---</option>
   <option value="chi" ${giaoDichCanSua.loai === "chi" ? "selected" : ""}>Chi</option>
@@ -222,7 +230,7 @@ function luuGiaoDich(id) {
   giaoDich[viTriSua] = new GiaoDich(id, loaiMoi, danhMucMoi, soTienMoi, ngayMoi, ghiChuMoi);
   luuDuLieuGiaoDich();
   veTrangchu(locTheoThang());
-  thongBao("Đã sửa thành công", "blue")
+  thongBao("✅ Đã sửa thành công", "blue")
 }
 
 function xoaGiaoDich(id) {
@@ -233,7 +241,8 @@ function xoaGiaoDich(id) {
   if (hoi) {
     giaoDich.splice(viTriXoa, 1);
     luuDuLieuGiaoDich();
-    veTrangchu(locTheoThang());    thongBao("🗑️ Đã xóa!", "red")
+    veTrangchu(locTheoThang());
+    thongBao("🗑️ Đã xóa!", "red")
   }
 
 }
@@ -253,5 +262,8 @@ return khopLoai;
   });
   veTrangchu(ketQua);
 }
-
-kiemTraDangNhap();
+function sapXepMoiNhat() {
+  giaoDich.sort((a, b) =>new Date(b.ngay) - new Date(a.ngay));
+  veTrangchu();
+    locTheoThang();
+}

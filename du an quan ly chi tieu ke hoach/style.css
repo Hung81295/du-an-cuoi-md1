@@ -1,15 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --nen: #0a0a0a;
-  --nen-the: #141414;
-  --nen-vien: #232323;
-  --chu-chinh: #e8e6e1;
-  --chu-phu: #8a8780;
-  --xanh-thu: #00d9a3;
-  --do-chi: #ff5470;
-  --xanh-nen: rgba(0, 217, 163, 0.08);
-  --do-nen: rgba(255, 84, 112, 0.08);
+  --nen: #0b0d0a;
+  --nen-the: #12150f;
+  --nen-vien: #262a1f;
+  --chu-chinh: #eae6d8;
+  --chu-phu: #8b8776;
+  --vang: #c9a227;
+  --vang-sang: #e8c766;
+  --xanh-tien: #1f7a4d;
+  --xanh-tien-sang: #35c97a;
+  --do-tien: #8b1e3f;
+  --do-tien-sang: #ef4565;
 }
 
 * {
@@ -23,74 +25,170 @@ body {
   font-family: 'Inter', -apple-system, sans-serif;
   min-height: 100vh;
   background-image:
-    linear-gradient(var(--nen-vien) 1px, transparent 1px);
-  background-size: 100% 44px;
+    repeating-linear-gradient(45deg, rgba(201,162,39,0.03) 0px, rgba(201,162,39,0.03) 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(-45deg, rgba(201,162,39,0.03) 0px, rgba(201,162,39,0.03) 1px, transparent 1px, transparent 14px);
   background-attachment: fixed;
 }
 
-#login, #main {
-  max-width: 760px;
+#login, #main, #tietKiem {
+  max-width: 780px;
   margin: 0 auto;
   padding: 40px 24px 80px;
 }
 
-/* ===== Tiêu đề ===== */
+/* ===================== TIÊU ĐỀ ===================== */
+
+/* Tiêu đề cấp 1 — "Trang chủ" */
 h1 {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 28px;
+  font-family: 'Cormorant Garamond', serif;
   font-weight: 700;
-  letter-spacing: -0.5px;
-  margin: 0 0 24px;
-  padding-bottom: 16px;
+  font-size: 34px;
+  letter-spacing: 0.5px;
+  margin: 0 0 20px;
+  padding-bottom: 18px;
+  color: var(--vang-sang);
   border-bottom: 1px solid var(--nen-vien);
+  position: relative;
 }
 
 h1::before {
-  content: "$ ";
-  color: var(--xanh-thu);
+  content: "◆ ";
+  color: var(--vang);
+  font-size: 18px;
+  vertical-align: middle;
 }
 
+h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--vang), transparent);
+}
+
+/* h1 dùng để điều hướng (có onclick, ví dụ nút "Trang chủ" ở trang Tiết kiệm) */
+h1[onclick] {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+h1[onclick]:hover {
+  color: #fff3cf;
+}
+
+/* Tab điều hướng nhỏ — "Chi tiêu" / "Tiết kiệm" trên trang chủ */
 h2 {
-  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
   font-weight: 600;
   color: var(--chu-phu);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   cursor: pointer;
   display: inline-block;
-  margin: 0 20px 20px 0;
-  padding-bottom: 4px;
+  margin: 0 24px 20px 0;
+  padding-bottom: 5px;
   border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.2s, border-color 0.2s;
 }
 
 h2:hover {
-  color: var(--xanh-thu);
-  border-color: var(--xanh-thu);
+  color: var(--vang-sang);
+  border-color: var(--vang);
 }
 
-/* ===== Form đăng nhập / đăng ký ===== */
+/* Tiêu đề tĩnh mặc định (không bấm được) — dùng ở form thêm/sửa nếu chưa gắn class riêng */
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--vang-sang);
+  margin: 0 0 16px;
+  display: block;
+}
+
+strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  color: var(--chu-chinh);
+}
+
+/* Tiêu đề chính của MỖI TRANG (Tiết kiệm, Chi tiết thu chi, Sửa giao dịch,
+   Kế hoạch tiết kiệm cho tương lai, Sửa kế hoạch...) — dùng class này,
+   không phụ thuộc thẻ là h2 hay h3 */
+.tieu-de-trang {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--vang-sang);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  cursor: default;
+  border-bottom: none;
+  margin: 0 0 20px;
+  display: block;
+}
+
+.tieu-de-trang.nho-hon {
+  font-size: 24px;
+}
+
+/* Tiêu đề dạng "hành động" bấm được, ví dụ "+ Thêm kế hoạch tiết kiệm" */
+.tieu-de-hanh-dong {
+  display: inline-block;
+  cursor: pointer;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tieu-de-hanh-dong:hover {
+  color: #fff3cf;
+  border-color: var(--vang);
+}
+
+.tieu-de-hanh-dong::before {
+  content: "+ ";
+  color: var(--vang);
+  font-weight: 700;
+}
+
+/* ===================== FORM ĐĂNG NHẬP / ĐĂNG KÝ ===================== */
+
 #login {
-  max-width: 380px;
-  padding-top: 12vh;
-}
-
-#login h1::before {
-  content: "";
-}
-
-#login > div {
-  background: var(--nen-the);
-  border: 1px solid var(--nen-vien);
-  border-radius: 10px;
-  padding: 32px;
+  max-width: 400px;
+  padding-top: 10vh;
 }
 
 #login h1 {
-  font-size: 22px;
+  font-size: 26px;
   text-align: center;
   border: none;
   padding: 0 0 24px;
+}
+
+#login h1::before, #login h1::after {
+  content: none;
+}
+
+#login > div {
+  background: linear-gradient(180deg, var(--nen-the), #0e100c);
+  border: 1px solid var(--nen-vien);
+  border-radius: 12px;
+  padding: 36px 32px;
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(201,162,39,0.08), 0 20px 40px rgba(0,0,0,0.5);
+}
+
+#login > div::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--vang), transparent);
+  border-radius: 12px 12px 0 0;
 }
 
 .dangNhap, .dangKy {
@@ -98,17 +196,17 @@ h2:hover {
   background: var(--nen);
   border: 1px solid var(--nen-vien);
   border-radius: 6px;
-  padding: 12px 14px;
+  padding: 13px 14px;
   color: var(--chu-chinh);
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
   margin-bottom: 12px;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.2s;
 }
 
 .dangNhap:focus, .dangKy:focus {
-  border-color: var(--xanh-thu);
+  border-color: var(--vang);
 }
 
 .dangNhap::placeholder, .dangKy::placeholder {
@@ -117,243 +215,348 @@ h2:hover {
 
 .nutDN, .nutDK {
   width: 100%;
-  background: var(--xanh-thu);
-  color: #04140f;
+  background: linear-gradient(180deg, var(--vang-sang), var(--vang));
+  color: #1a1400;
   border: none;
   border-radius: 6px;
   padding: 13px;
   font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   cursor: pointer;
-  margin-top: 4px;
-  transition: opacity 0.15s;
+  margin-top: 6px;
+  transition: filter 0.2s;
 }
 
 .nutDN:hover, .nutDK:hover {
-  opacity: 0.85;
+  filter: brightness(1.1);
 }
 
 #login p {
   text-align: center;
   color: var(--chu-phu);
   font-size: 13px;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 #login p span {
-  color: var(--xanh-thu);
+  color: var(--vang-sang);
   cursor: pointer;
   font-weight: 600;
 }
 
-/* ===== Thanh chuyển tháng ===== */
-#main > div:nth-of-type(1) {
+/* ===================== THANH CHUYỂN THÁNG ===================== */
+
+#main > div:first-of-type {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   margin-bottom: 24px;
 }
 
-#main > div:nth-of-type(1) button {
+#main > div:first-of-type button {
   background: var(--nen-the);
   border: 1px solid var(--nen-vien);
-  color: var(--chu-chinh);
-  width: 32px;
-  height: 32px;
+  color: var(--vang);
+  width: 34px;
+  height: 34px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
 }
 
-#main > div:nth-of-type(1) button:hover {
-  border-color: var(--xanh-thu);
-  color: var(--xanh-thu);
+#main > div:first-of-type button:hover {
+  border-color: var(--vang);
+  background: var(--nen-vien);
 }
 
-#main > div:nth-of-type(1) span {
+#main > div:first-of-type span {
   font-family: 'JetBrains Mono', monospace;
   font-size: 15px;
-  color: var(--chu-chinh) !important;
+  color: var(--vang-sang) !important;
+  padding: 0 4px;
 }
 
-/* ===== Nút đăng xuất ===== */
+/* ===================== NÚT ĐĂNG XUẤT ===================== */
+
 button[onclick="dangXuat()"], button[onClick="dangXuat()"] {
   float: right;
   background: transparent;
   border: 1px solid var(--nen-vien);
   color: var(--chu-phu);
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
 }
 
 button[onclick="dangXuat()"]:hover, button[onClick="dangXuat()"]:hover {
-  border-color: var(--do-chi);
-  color: var(--do-chi);
+  border-color: var(--do-tien-sang);
+  color: var(--do-tien-sang);
 }
 
-/* ===== Select bộ lọc ===== */
+/* ===================== INPUT / SELECT / DATE (dùng chung) ===================== */
+
+input[type="date"],
 select {
-  background: var(--nen);
-  color: var(--chu-chinh);
+  color-scheme: dark;
+}
+
+#main input[type="text"],
+#main input[type="number"],
+#main input[type="date"],
+#tietKiem input[type="text"],
+#tietKiem input[type="number"],
+#tietKiem input[type="date"] {
+  background: var(--nen-the);
   border: 1px solid var(--nen-vien);
-  border-radius: 4px;
-  padding: 4px 8px;
+  border-radius: 6px;
+  padding: 11px 12px;
+  color: var(--chu-chinh);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin: 4px 8px 12px 0;
+  outline: none;
+  height: 42px;
+}
+
+#main select, #tietKiem select {
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  border-radius: 6px;
+  padding: 11px 12px;
+  color: var(--chu-chinh);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  margin: 4px 8px 12px 0;
+  outline: none;
+  height: 42px;
+  cursor: pointer;
+}
+
+#main input:focus, #tietKiem input:focus,
+#main select:focus, #tietKiem select:focus {
+  border-color: var(--vang);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7) sepia(1) saturate(3) hue-rotate(10deg);
+  cursor: pointer;
+}
+
+/* select nhỏ trong bảng (bộ lọc "Loại") — giữ kích thước gọn riêng */
+th select {
+  height: auto;
+  padding: 5px 8px;
   font-size: 12px;
   font-family: 'Inter', sans-serif;
+  margin: 5px 0 0;
 }
 
-/* ===== Bảng giao dịch — kiểu sổ ghi chép ===== */
+label {
+  display: block;
+  font-size: 11px;
+  color: var(--chu-phu);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 14px 0 5px;
+}
+
+#main p, #tietKiem p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--chu-phu);
+}
+
+/* ===================== BẢNG GIAO DỊCH ===================== */
+
 table {
   width: 100%;
   border-collapse: collapse;
   clear: both;
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
+  background: var(--nen-the);
+  border: 1px solid var(--nen-vien);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 table tr:first-child {
   font-family: 'Inter', sans-serif;
   text-transform: uppercase;
   font-size: 11px;
-  letter-spacing: 0.5px;
-  color: var(--chu-phu);
+  letter-spacing: 0.8px;
+  color: var(--vang);
+  background: rgba(201,162,39,0.06);
 }
 
 th {
   text-align: left;
-  padding: 10px 12px;
+  padding: 12px;
   border-bottom: 1px solid var(--nen-vien);
   font-weight: 600;
 }
 
 td {
-  padding: 12px;
+  padding: 13px 12px;
   border-bottom: 1px solid var(--nen-vien);
   color: var(--chu-chinh);
 }
 
-/* vạch màu bên trái theo loại thu/chi, gắn qua data-loai nếu bạn thêm vào <tr> */
 tr[data-loai="thu"] {
-  border-left: 3px solid var(--xanh-thu);
-  background: var(--xanh-nen);
+  border-left: 3px solid var(--xanh-tien-sang);
+  background: rgba(53, 201, 122, 0.05);
 }
 
 tr[data-loai="chi"] {
-  border-left: 3px solid var(--do-chi);
-  background: var(--do-nen);
+  border-left: 3px solid var(--do-tien-sang);
+  background: rgba(239, 69, 101, 0.05);
 }
 
-/* Tô màu số tiền theo loại (đặt class "so-tien-thu" / "so-tien-chi" vào <td> số tiền) */
 .so-tien-thu {
-  color: var(--xanh-thu);
+  color: var(--xanh-tien-sang);
   font-weight: 700;
+}
+
+.so-tien-thu::before {
+  content: "+ ";
 }
 
 .so-tien-chi {
-  color: var(--do-chi);
+  color: var(--do-tien-sang);
   font-weight: 700;
 }
 
-/* ===== Nút hành động trong bảng ===== */
-td button {
+.so-tien-chi::before {
+  content: "− ";
+}
+
+/* ===================== NÚT HÀNH ĐỘNG ===================== */
+
+td button, div button {
   background: transparent;
   border: 1px solid var(--nen-vien);
   color: var(--chu-phu);
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   font-size: 12px;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
+  margin-right: 4px;
 }
 
-td button:hover {
-  border-color: var(--chu-chinh);
-  color: var(--chu-chinh);
+td button:hover, div button:hover {
+  border-color: var(--vang);
+  color: var(--vang-sang);
 }
 
-/* ===== Form thêm / sửa giao dịch ===== */
-#main input[type="text"],
-#main input[type="number"],
-#main input[type="date"],
-#main input[type="password"] {
+.luu-btn, .nutLuuThem {
+  background: linear-gradient(180deg, var(--vang-sang), var(--vang));
+  color: #1a1400;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.luu-btn:hover, .nutLuuThem:hover {
+  filter: brightness(1.1);
+}
+
+.huy-btn, .nutHuy {
+  background: transparent;
+  color: var(--chu-phu);
+  border: 1px solid var(--nen-vien);
+  padding: 11px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.huy-btn:hover, .nutHuy:hover {
+  border-color: var(--do-tien-sang);
+  color: var(--do-tien-sang);
+}
+
+.sua-btn {
+  background: transparent;
+  border: 1px solid var(--nen-vien);
+  color: var(--vang);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sua-btn:hover {
+  border-color: var(--vang);
+  color: var(--vang-sang);
+}
+
+/* ===================== THANH % (chi tiêu / tiết kiệm) ===================== */
+
+#main div[style*="background:#e2e8f0"],
+#tietKiem div[style*="background:#e2e8f0"] {
+  background: var(--nen-vien) !important;
+  border: 1px solid rgba(201,162,39,0.25);
+}
+
+/* ===================== TRANG TIẾT KIỆM — mỗi kế hoạch là 1 thẻ ===================== */
+
+#tietKiem > div {
   background: var(--nen-the);
   border: 1px solid var(--nen-vien);
-  border-radius: 6px;
-  padding: 10px 12px;
-  color: var(--chu-chinh);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  margin: 4px 8px 4px 0;
-  outline: none;
+  border-left: 3px solid var(--vang);
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 4px;
 }
 
-#main input:focus {
-  border-color: var(--xanh-thu);
+#tietKiem > div > strong {
+  color: var(--vang-sang);
 }
-
-.luu-btn {
-  background: var(--xanh-thu);
-  color: #04140f;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-right: 8px;
-}
-
-.huy-btn {
+.sap-xep-btn {
   background: transparent;
-  color: var(--chu-phu);
   border: 1px solid var(--nen-vien);
-  padding: 10px 20px;
+  color: var(--vang);
+  padding: 8px 14px;
   border-radius: 6px;
-  cursor: pointer;
-}
-
-.huy-btn:hover {
-  border-color: var(--do-chi);
-  color: var(--do-chi);
-}
-
-.nutLuuThem {
-  background: var(--xanh-thu);
-  color: #04140f;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-right: 8px;
-}
-
-.nutHuy {
-  background: transparent;
-  color: var(--chu-phu);
-  border: 1px solid var(--nen-vien);
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-label {
-  display: block;
   font-size: 12px;
-  color: var(--chu-phu);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 12px 0 4px;
+  cursor: pointer;
+  margin: 0 8px 16px 0;
+  font-family: 'Inter', sans-serif;
 }
 
-/* ===== Thanh % chi tiêu (thay cho biểu đồ) ===== */
-#main p {
+.sap-xep-btn:hover {
+  border-color: var(--vang);
+  background: rgba(201,162,39,0.08);
+}
+.dem-nguoc {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--chu-phu);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  display: inline-block;
 }
 
-#main div[style*="background:#e2e8f0"] {
-  background: var(--nen-vien) !important;
+.dem-nguoc.con-nhieu {
+  color: var(--xanh-tien-sang);
+  background: rgba(53, 201, 122, 0.1);
+}
+
+.dem-nguoc.sap-het {
+  color: var(--vang-sang);
+  background: rgba(201,162,39,0.1);
+}
+
+.dem-nguoc.qua-han {
+  color: var(--do-tien-sang);
+  background: rgba(239, 69, 101, 0.1);
 }

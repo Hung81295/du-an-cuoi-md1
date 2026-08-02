@@ -100,4 +100,6 @@ veTrangchu();
 
 function napGiaoDichCuaNguoiDung() {
   giaoDich = layDuLieuGiaoDich();
+  keHoach = layDuLieuKeHoach();
+
 }
