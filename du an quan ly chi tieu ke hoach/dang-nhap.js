@@ -108,7 +108,7 @@ veTrangchu();
 }
 
 function napGiaoDichCuaNguoiDung() {
-  giaoDich = layDuLieuGiaoDich();
-  keHoach = layDuLieuKeHoach();
+  window.giaoDich = layDuLieuGiaoDich();
+  window.keHoach = layDuLieuKeHoach();
 
 }
