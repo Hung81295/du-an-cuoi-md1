@@ -22,14 +22,14 @@ function dangNhap() {
     }
   }
   if (timThay) {
-    alert("Đăng nhập thành công");
     document.getElementById("login").style.display = "none";
     document.getElementById("main").style.display = "block";
     localStorage.setItem("nguoiDangNhap", tenNguoiDung);
     napGiaoDichCuaNguoiDung();
     veTrangchu(locTheoThang());
+    thongBao("✅ Đăng nhập thành công!", "green")
   } else {
-    alert("Sai tên đăng nhập hoặc mật khẩu");
+    thongBao("❌ Sai tên đăng nhập hoặc mật khẩu", "red")
   }
 }
 
@@ -45,6 +45,11 @@ function moTrangDangNhap() {
       <p>Bạn chưa có tài khoản? <span onclick="moTrangDangKy()">Đăng ký</span></p>
     </div>
 `;
+  document.getElementById("matKhau").addEventListener("keydown",function (e){
+    if (e.code==="Enter"){
+      dangNhap();
+    }
+  });
 }
 
 function moTrangDangKy() {
@@ -59,8 +64,12 @@ function moTrangDangKy() {
         <p>Bạn đã có tài khoản? <span onclick="moTrangDangNhap()">Đăng nhập</span></p>
       </div>
  `
+  document.getElementById("matKhau").addEventListener("keydown", function (e) {
+    if (e.code === "Enter") {
+      dangKy();
+    }
+  });
 }
-
 function dangKy() {
   let tenNguoiDung = document.getElementById("tenTaiKhoan").value;
   let matKhau = document.getElementById("matKhau").value;
