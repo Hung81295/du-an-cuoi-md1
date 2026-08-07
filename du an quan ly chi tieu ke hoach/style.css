@@ -407,6 +407,7 @@ th {
   padding: 12px;
   border-bottom: 1px solid var(--nen-vien);
   font-weight: 600;
+  vertical-align: middle
 }
 
 td {
@@ -551,24 +552,29 @@ td button:hover, div button:hover {
 .dem-nguoc {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  padding: 3px 10px;
+  font-weight: 600;
+  padding: 4px 12px;
   border-radius: 12px;
   display: inline-block;
+  margin-left: 8px;
 }
 
 .dem-nguoc.con-nhieu {
   color: var(--xanh-tien-sang);
-  background: rgba(53, 201, 122, 0.1);
+  background: rgba(53, 201, 122, 0.15);
+  border: 1px solid rgba(53, 201, 122, 0.4);
 }
 
 .dem-nguoc.sap-het {
   color: var(--vang-sang);
-  background: rgba(201,162,39,0.1);
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px solid rgba(201, 162, 39, 0.5);
 }
 
 .dem-nguoc.qua-han {
   color: var(--do-tien-sang);
-  background: rgba(239, 69, 101, 0.1);
+  background: rgba(239, 69, 101, 0.15);
+  border: 1px solid rgba(239, 69, 101, 0.5);
 }
 .the-tiet-kiem-thang {
   display: flex;
@@ -615,7 +621,7 @@ td button:hover, div button:hover {
   color: var(--do-tien-sang);
 }
 .select-loc {
-  margin-top: 0;
+  margin-top: 0px;
   width: auto;
   min-width: 90px;
   padding: 6px 8px;

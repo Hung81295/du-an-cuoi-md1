@@ -39,17 +39,20 @@ function trangKeHoach() {
 
     let soNgayConLai = Math.ceil((new Date(kh.hanChot) - new Date()) / (1000 * 60 * 60 * 24));
     let lopDemNguoc = "con-nhieu";
+    let chuY=`Còn ${soNgayConLai} ngày`;
     if (soNgayConLai < 0) {
       lopDemNguoc = "qua-han";
+      chuY=`⚠ Quá hạn ${Math.abs(soNgayConLai)} ngày`;
     } else if (soNgayConLai <= 7) {
       lopDemNguoc = "sap-het";
+      chuY=`⏰ Còn ${soNgayConLai} ngày`
     }
     let phanTram = kh.soTienCan > 0 ? Math.min((kh.soTienDaCo / kh.soTienCan) * 100, 100) : 0;
 
     chuoiHtml += `
       <div>
         <strong>${kh.tenMucTieu}</strong>
-<span class="dem-nguoc ${lopDemNguoc}">Còn ${soNgayConLai} ngày</span>
+<span class="dem-nguoc ${lopDemNguoc}">${chuY}</span>
         <p>${kh.soTienDaCo.toLocaleString("vi-VN")}đ /
         ${kh.soTienCan.toLocaleString("vi-VN")}đ
         <div style="width:100%; height:20px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
@@ -172,7 +175,7 @@ function napTienKeHoach(id) {
     return;
   }
 
-  keHoach[viTri].soTienDaCo += soTienNap;   // chỉ cộng dồn, không đụng gì khác
+  keHoach[viTri].soTienDaCo += soTienNap;
   luuDuLieuKeHoach();
   trangKeHoach();
   thongBao("💰 Đã nạp tiền!", "green");

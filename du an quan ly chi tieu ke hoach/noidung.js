@@ -124,7 +124,7 @@ function veTrangchu(mangHienThi) {
   let phanTramChi=tongThu>0?Math.min((tongChi/tongThu)*100,100):0;
   chuoiHtml+=`
   </table>
-  <p>Chi tiêu tháng này: ${phanTramChi.toFixed(0)}% so với thu nhập
+  <p>Tháng này đã chi tiêu ${phanTramChi.toFixed(0)}% so với thu nhập
   (Thu: ${tongThu.toLocaleString("vi-VN")}đ - Chi: ${tongChi.toLocaleString("vi-VN")}đ)</p>
   <div style="width:100%; height:20px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
     <div style="width:${phanTramChi}%; height:100%; background:${tongChi > tongThu ? "red" : "green"};"></div>
